@@ -4,16 +4,15 @@ import numpy as np
 import requests
 from bs4 import BeautifulSoup
 
-num = 0
 phones = []
 
-while num<=2:
-    num+=1
+for page in range(5):
     try:
-        page = requests.get("https://www.skroutz.gr/c/40/kinhta-thlefwna/m/15053/Xiaomi.html?page="+str(num))
+        page = requests.get("https://www.skroutz.gr/c/40/kinhta-thlefwna/m/15053/Xiaomi.html?page="+str(page))
         soup = BeautifulSoup(page.text, "html.parser")
     except requests.exceptions.RequestException as error:
-        break
+        print(error)
+
 
     phone_data = soup.findAll('li', attrs= {'class': "cf card with-skus-slider"})
 
