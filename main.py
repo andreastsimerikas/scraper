@@ -1,20 +1,31 @@
+from time import sleep
 import pandas as pd
 import numpy as np
 import requests
 from bs4 import BeautifulSoup
 
-phone = []
+num = 0
+phones = []
 
-page = requests.get("https://www.skroutz.gr/c/40/kinhta-thlefwna.html?page=1")
-soup = BeautifulSoup(page.text, "html.parser")
-phone_data = soup.findAll('li', attrs= {'class': "cf card with-skus-slider"})
+while num<=2:
+    num+=1
+    try:
+        page = requests.get("https://www.skroutz.gr/c/40/kinhta-thlefwna/m/15053/Xiaomi.html?page="+str(num))
+        soup = BeautifulSoup(page.text, "html.parser")
+    except requests.exceptions.RequestException as error:
+        break
 
-for data in phone_data:
-    phone.append(data.find("div", class_ = "card-content").h2.a.text)   
-    
-phone_df = pd.DataFrame({"Phone": phone})  
+    phone_data = soup.findAll('li', attrs= {'class': "cf card with-skus-slider"})
 
-print(phone_df)
+    for data in phone_data:
+        phones.append(data.find("div", class_ = "card-content").h2.a.text) 
+
+    print(phones)      
+    sleep(5)
+        
+phones_df = pd.DataFrame({"Phone": phones})  
+print(phones_df)
+
 
 
 
